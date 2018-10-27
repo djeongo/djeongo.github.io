@@ -1,7 +1,7 @@
 Hello World
 
 # Design of Digital Filters
-
+```
 If linear-phase required within the passband:
   use FIR
 else:
@@ -9,5 +9,5 @@ else:
     use IIR
   else:
     use FIR
-
+```
 
