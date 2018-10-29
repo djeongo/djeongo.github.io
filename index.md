@@ -1,9 +1,42 @@
-Hello World
 # Basics
 
 ## Convolution
 
+y[n] = \sum_{k=0}^{M-1}h[k]x[n-k]
 
+where N=len(x), N=len(h)
+
+| y[n] | Expanded | Valid |
+|------|---------------------------|-----------|
+| y[0] | h[0]*x[0-0] + ~~h[1]*x[0-1]~~ | h[0]+x[0] |
+| y[1] | h[0]*x[1-0] + h[1]*x[1-1] | h[0]*x[1] + h[1]*x[0] |
+| y[2] | h[0]*x[2-0] + h[1]*x[2-1] + h[2]*x[2-2] | h[0]*x[2] + h[1]*x[1] + h[2]*x[0] |
+| ...  | ... | ... |
+| y[N-1] | h[0]*x[(N-1)-0] + h[1]*x[(N-1)-1] + h[2]*x[(N-1)-2] + ... + h[M-1]*x[(N-1)-(M-1)] | h[0]*x[(N-1)-0] + h[1]*x[(N-1)-1] + h[2]*x[(N-1)-2] + ... + h[M-1]*x[N-M] |
+| y[N] | ~~h[0]*x[N-0]~~ + h[1]*x[N-1] + h[2]*x[N-2] + ... + h[M-1]*x[N-(M-1)] | h[1]*x[N-1] + h[2]*x[N-2] + ... + h[M]*x[N-M+1] |
+| ...  | ... | ... |
+| y[N+M-2] | ~~h[0]*x[(N+M-2)-0] + h[1]*x[(N+M-2)-1] + h[2]*x[(N+M-2)-2]~~ + ... + h[M]*x[(N+M-2)-(M-1)] | h[M]*x[N-1] |
+
+### Implementation
+```
+import numpy as np                                                              
+                                                                                
+x=[-1,2,3,4,5,1,2,31,2,3]                                                       
+h=[2,3,1,2,3,]                                                                  
+                                                                                
+N=len(x)                                                                        
+M=len(h)                                                                        
+y=[]                                                                            
+for n in range(N+M-1):                                                          
+  intermediate_sum = 0                                                          
+  for k in range(M):                                                            
+    if n-k >= 0 and n-k < N:                                                    
+      intermediate_sum += h[k]*x[n-k]                                           
+  y.append(intermediate_sum)                                                    
+                                                                                
+print(y)                                                                        
+print(np.convolve(x, h))           
+```
 
 # Design of Digital Filters
 
